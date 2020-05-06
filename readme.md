@@ -93,3 +93,7 @@
    - 先启动react，再启动electron
    - 合并命令 使用 yarn add concurrently -D
    - 等待资源成功之后，再运行其他命令 yarn add wait-on -D
+   - 使用cross-env 来跨平台关闭默认打开浏览器
+#### 文件结构和代码规范
+   - 简洁，易于复用，不要嵌套过深
+   - 
