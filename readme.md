@@ -91,3 +91,5 @@
    - yarn add electron -D
    - yarn add electron-is-dev -D
    - 先启动react，再启动electron
+   - 合并命令 使用 yarn add concurrently -D
+   - 等待资源成功之后，再运行其他命令 yarn add wait-on -D
