@@ -84,3 +84,10 @@
      - react: 搜索框，文件列表，新建文件，文件tabs,编辑器
      - electron: 文件列表右键子菜单，文件导入，应用菜单，全局快捷键，文件数据持久化保存
 #### react哲学
+   - 将设计好的UI划分为组件层级
+   - 创建应用的静态版本
+#### 配置开发环境
+   - npx create-react-app cloud
+   - yarn add electron -D
+   - yarn add electron-is-dev -D
+   - 先启动react，再启动electron
