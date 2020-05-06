@@ -55,4 +55,15 @@
        // args是传递过来的参数，可以在输出之后可以在终端看到
        // event.reply()把我们的消息传递回去 参数和send一样，事件的名称，要发送的信息
      ```
-
+   - 使用remote实现跨进程访问
+      - 在renderer.js中,electron给我们的提供的快捷键
+      ```js 
+        const { BrowserWindow } = require('electron').remote
+        let win = new BrowserWindow({
+            height: 400,
+            width: 300
+        })
+        win.loadURL('https://baidu.com')
+      ```
+### react
+   - 基础略过
