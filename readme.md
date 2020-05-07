@@ -108,5 +108,18 @@
        ```js
         yarn add @fortawesome/fontawesome-svg-core
         yarn add @fortawesome/free-solid-svg-icons
+        yarn add @fortawesome/react-fontawesome
+
        ```
+   - 使用PropTypes 进行类型检查
+     ```js
+       FileSearch.propTypes = {
+           title: PropTypes.string,
+           onFileSearch: PropTypes.func.isRequired
+       }
+       // 默认值
+       FileSearch.defaultProps = {
+           title: '我的云文档'
+       }
+     ```
 
