@@ -103,3 +103,10 @@
      - 使用bootstrap 进行栅格布局，同时使用flex
      - 添加键盘相应事件（enter,esc）
      - 使用useRef完成input框事件操作,记住dom节点
+   - 为项目选择图标库
+     - 使用fontawesome-react
+       ```js
+        yarn add @fortawesome/fontawesome-svg-core
+        yarn add @fortawesome/free-solid-svg-icons
+       ```
+

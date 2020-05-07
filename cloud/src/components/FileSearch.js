@@ -1,4 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+// import { FontAwesomeIcon } from '@fortawesome/fontawesome-svg-core'
+import { faSearch, faTimes } from '@fortawesome/free-solid-svg-icons'
+import './FileSearch.css'
+
 
 const FileSearch = ({title, onFileSearch}) => {
     const [ inputActive, setInputActive ] = useState(false)
@@ -36,8 +41,11 @@ const FileSearch = ({title, onFileSearch}) => {
                     <span>
                         {title}
                     </span>
-                    <button onClick={()=> {setInputActive(true)}} type="button" className="btn btn-primary">
-                        搜索
+                    <button onClick={()=> {setInputActive(true)}} 
+                    type="button" className="icon-button">
+                        <FontAwesomeIcon icon={faSearch} 
+                        
+                        title="搜索"/>
                     </button>
                 </div>
             }
@@ -50,9 +58,13 @@ const FileSearch = ({title, onFileSearch}) => {
                     ></input>
                     <button 
                     type="button" 
-                    className="btn btn-primary col-4"
+                    className="icon-button col-4"
                     onClick={ closeSearch }
-                    >关闭</button>
+                    >
+                         <FontAwesomeIcon icon={faTimes} 
+                        
+                        title="关闭"/>
+                    </button>
 
                 </div>
             }
