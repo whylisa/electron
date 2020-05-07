@@ -1,5 +1,4 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css'
 import FileSearch from './components/FileSearch'
@@ -10,7 +9,7 @@ function App() {
          <div className="col-3 bg-light left-panel">
              <FileSearch 
                title="点击云文档"
-               onFileSearch={() => {}}
+               onFileSearch={(value) => { console.log(value)}}
              />
          </div>
          <div className="col-9 bg-primary right-panel">

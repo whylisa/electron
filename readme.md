@@ -97,5 +97,9 @@
 #### 文件结构和代码规范
    - 简洁，易于复用，不要嵌套过深
    - 
-#### 安装样式库
-   - yarn add bootstrap 
+#### 功能開發
+   - 安装组件库：yarn add bootstrap 
+   - fileSearch组件
+     - 使用bootstrap 进行栅格布局，同时使用flex
+     - 添加键盘相应事件（enter,esc）
+     - 使用useRef完成input框事件操作,记住dom节点
