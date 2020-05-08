@@ -124,4 +124,27 @@
      ```
    - filelist组件开发
      - 小坑，新写法使用事件，要包裹起来，直接使用在渲染页面的时候未触发就会执行
-
+   - 安装sass 
+   - markdown编辑器的基本使用easyMDE
+     - yarn add react-simplemde-editor
+   - state设计原则
+     - 最小化state
+     - DRY:dont repeat yourself
+     - 有些数据可以根据已有state计算得出
+     - 使用多个state变量
+   - APP state 分析
+     - 文件列表
+     - 已经打开的文件列表
+     - 搜索后的文件列表
+     - 当前被选中的文件
+     - 未保存的文件
+   - 安装UUID
+   - Flatten State
+     - 解决数组冗余
+     - 数据处理更加方便
+   - react中使用node
+     - 在electron中要用window.require()
+     - __dirname当前文件夹的路径
+     - node 10以上，内置promise
+     - 使用electron-store 持久化数据
+     - 
