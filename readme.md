@@ -147,4 +147,7 @@
      - __dirname当前文件夹的路径
      - node 10以上，内置promise
      - 使用electron-store 持久化数据
-     - 
+     - 网络储存
+       - 块储存
+       - 文件储存
+       - 对象储存
