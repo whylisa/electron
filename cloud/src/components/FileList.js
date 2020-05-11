@@ -9,20 +9,24 @@ const FileList = ({ files, onFileClick, onSaveEdit, onFileDelete}) => {
     const [ value ,setValue] = useState('')
     const enterPressed = useKeyPress(13)
     const escPressed = useKeyPress(27)
-    const closeSearch = () => {
+    const closeSearch = (editItem) => {
         setEditStatus(false)
         setValue('')
+        if (editItem.isNew) {
+            onFileDelete(editItem.id)
+        }
     }
     useEffect(() => {
+        const editItem = files.find(file => file.id === editStatus)
+
         if( enterPressed && editStatus) {
-            const editItem = files.find(file => file.id === editStatus)
             console.log(editItem.id)
             onSaveEdit(editItem.id, value)
             setValue('')
             setEditStatus(false)
         }
         if( escPressed && editStatus) {
-            closeSearch()
+            closeSearch(editItem)
         }
 
 
@@ -42,12 +46,19 @@ const FileList = ({ files, onFileClick, onSaveEdit, onFileDelete}) => {
         //     document.removeEventListener('keyup', handleInputEvent)
         // }
     })
+    useEffect(() => {
+        const newFile = files.find(file => file.isNew)
+        if (newFile) {
+          setEditStatus(newFile.id)
+          setValue(newFile.title)
+        }
+      }, [files])
     return (
         <ul className="list-group list-group-flush file-list">
             {
                 files.map(file => (
                     <li key={file.id} className="row list-group-item bg-light d-flex align-items-center file-item" >
-                        { (file.id !== editStatus) &&
+                        { (file.id !== editStatus && !file.isNew) &&
                         <>
                         <span onClick={() => onFileClick(file.id)} className="col-8">{file.title}</span>
                         <button 
@@ -67,7 +78,7 @@ const FileList = ({ files, onFileClick, onSaveEdit, onFileDelete}) => {
                         </>
                         }
                         {
-                         ( file.id === editStatus) &&
+                         ( file.id === editStatus || file.isNew) &&
                          <div className="row">
                          <input  className="form-control col-8" value={value} 
                           onChange={(e) => {setValue(e.target.value)}}
@@ -75,7 +86,7 @@ const FileList = ({ files, onFileClick, onSaveEdit, onFileDelete}) => {
                          <button 
                          type="button" 
                          className="icon-button col-4"
-                         onClick={ closeSearch }
+                         onClick={ () => {closeSearch(file)} }
                          >
                               <FontAwesomeIcon icon={faTimes} 
                              

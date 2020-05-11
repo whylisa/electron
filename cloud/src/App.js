@@ -8,6 +8,7 @@ import defaultFiles from './utils/defaultFiles'
 import BottomBtn from "./components/BottomBtn";
 import TabList from './components/TabList'
 import SimpleMDE from "react-simplemde-editor"
+import uuidv4 from 'uuid/dist/v4'
 function App() {
   // 文件数据
   const [files, setFiles ] = useState(defaultFiles)
@@ -77,6 +78,7 @@ function App() {
     let newFiles = files.map((item) => {
       if(item.id === id) {
         item.title = title
+        item.isNew = false
       }
       return item
     })
@@ -91,6 +93,21 @@ function App() {
     }else {
       searchedFiles([])
     }
+  }
+  // 新建文件
+  const createNewFile = () => {
+    const newID = uuidv4()
+    const newFile = [
+      ...files,
+      {
+        id: newID,
+        title: '',
+        body: '## 请输入Mak',
+        createdAt:new Date().getTime(),
+        isNew: true
+      }
+    ]
+    setFiles(newFile)
   }
   const fileListArray = (searchedFiles.length > 0) ? searchedFiles: files
   return (
@@ -113,6 +130,7 @@ function App() {
                     text="新建"
                     colorClass="btn-primary"
                     icon={faPlus}
+                    onBtnClick={ createNewFile }
                   />
                </div>
                <div className="col-6">
