@@ -17,6 +17,8 @@ function App() {
   const [ openedFileIDs, setOpenedFileIDs ] = useState([])
   // 未保存的文件
   const [ unsavedFileIDs, setUnsavedFileIDs ] = useState([])
+  // 保存search时的状态集合
+  const [ searchedFiles, setSearchFiles ] = useState([])
   // 打开的文件
   const openedFiles = openedFileIDs.map(openID => {
     return files.find(file => file.id === openID)
@@ -63,19 +65,47 @@ function App() {
        setUnsavedFileIDs([...unsavedFileIDs, id])
      }
   } 
+  // 文件删除
+  const fileDelete = (id) => {
+    // 过滤出不等于当前点击的项，然后更新files
+    const newFileList = files.filter(file => file.id !== id)
+    setFiles(newFileList)
+    tabClose(id)
+  }
+  // 修改title
+  const updateFileName = (id, title) => {
+    let newFiles = files.map((item) => {
+      if(item.id === id) {
+        item.title = title
+      }
+      return item
+    })
+    setFiles(newFiles)
+  }
+  // 查询文件
+  const fileSearch = (value) => {
+    console.log(searchedFiles)
+    const newFiles = files.filter(item => item.title.includes(value))
+    if(newFiles) {
+      setSearchFiles(newFiles)
+    }else {
+      searchedFiles([])
+    }
+  }
+  const fileListArray = (searchedFiles.length > 0) ? searchedFiles: files
   return (
     <div className="App container-fluid">
        <div className="row">
          <div className="col-3 bg-light left-panel">
              <FileSearch 
                title="点击云文档"
-               onFileSearch={(value) => { console.log(value)}}
+               onFileSearch={ fileSearch }
              />
              <FileList 
-               files={files}
+               files={ fileListArray }
                onFileClick={ fileClick }
-               onFileDelete={(id) => { console.log('del',id)}}
-               onSaveEdit={(id, newValue) => {console.log(id, newValue)}}
+               onFileDelete={ fileDelete }
+               onSaveEdit={ updateFileName }
              />
              <div className="row button-group">
                <div className="col-6">
