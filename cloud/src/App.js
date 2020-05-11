@@ -50,7 +50,18 @@ function App() {
   }
   // 文件变化
   const fileChange = (id,value) => {
-
+    // 循环更新新的value
+     const newFiles = files.map(file => {
+       if( file.id === id) {
+         file.body = value
+       }
+       return file
+     })
+     setFiles(newFiles)
+     // 更新 unsavedIDs
+     if( !unsavedFileIDs.includes(id)) {
+       setUnsavedFileIDs([...unsavedFileIDs, id])
+     }
   } 
   return (
     <div className="App container-fluid">
@@ -105,7 +116,7 @@ function App() {
                value={activeFile && activeFile.body}
                onChange={(value) => {fileChange(activeFile.id, value)}}
                options={{
-                minHeight: '515px',
+                minHeight: '500px',
               }}
             />
             </>

@@ -31,8 +31,9 @@ const TabList = ({ files, activeId, unsaveIds, onTabClick, onCloseTab }) => {
                                    icon={faTimes}
                                  />
                              </span>
-                         </a>
                          {withUnsavedMark && <span className="rounded-circle ml-2 unsaved-icon"></span>}
+
+                         </a>
                       </li>
                   )
               })
