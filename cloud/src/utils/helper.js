@@ -1,4 +1,4 @@
-// 数组扁平化为对象
+// 数组扁平化为对象，使用reduce
 export const flattenArr = (arr) => {
     return arr.reduce((map, item) => {
         map[item.id] = item
