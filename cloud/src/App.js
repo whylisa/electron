@@ -5,13 +5,14 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import FileSearch from './components/FileSearch'
 import FileList from './components/FileList'
 import defaultFiles from './utils/defaultFiles'
+import { flattenArr, objToArr} from './utils/helper'
 import BottomBtn from "./components/BottomBtn";
 import TabList from './components/TabList'
 import SimpleMDE from "react-simplemde-editor"
 import uuidv4 from 'uuid/dist/v4'
 function App() {
   // 文件数据
-  const [files, setFiles ] = useState(defaultFiles)
+  const [files, setFiles ] = useState(flattenArr(defaultFiles))
   // 激活的那一条数据
   const [ activeFileID, setActiveFileID ] =useState('')
   // 打开文件的集合
@@ -21,10 +22,12 @@ function App() {
   // 保存search时的状态集合
   const [ searchedFiles, setSearchFiles ] = useState([])
   // 打开的文件
-  const openedFiles = openedFileIDs.map(openID => {
-    return files.find(file => file.id === openID)
-  })
-  const activeFile = files.find(file => file.id === activeFileID)
+ 
+  const filesArr = objToArr(files)
+  console.log('files',files)
+  console.log('filesArr',filesArr)
+
+  const activeFile = files[activeFileID]
   const fileClick = (fileID) => {
     // 設置當前激活的文件
       setActiveFileID(fileID)
@@ -54,13 +57,14 @@ function App() {
   // 文件变化
   const fileChange = (id,value) => {
     // 循环更新新的value
-     const newFiles = files.map(file => {
-       if( file.id === id) {
-         file.body = value
-       }
-       return file
-     })
-     setFiles(newFiles)
+    //  const newFiles = files.map(file => {
+    //    if( file.id === id) {
+    //      file.body = value
+    //    }
+    //    return file
+    //  })
+    const newFile = { ...files[id], body: value}
+     setFiles({ ...files,[id]: newFile})
      // 更新 unsavedIDs
      if( !unsavedFileIDs.includes(id)) {
        setUnsavedFileIDs([...unsavedFileIDs, id])
@@ -69,25 +73,28 @@ function App() {
   // 文件删除
   const fileDelete = (id) => {
     // 过滤出不等于当前点击的项，然后更新files
-    const newFileList = files.filter(file => file.id !== id)
-    setFiles(newFileList)
+    // const newFileList = files.filter(file => file.id !== id)
+    delete files[id]
+    setFiles(files)
     tabClose(id)
   }
   // 修改title
   const updateFileName = (id, title) => {
-    let newFiles = files.map((item) => {
-      if(item.id === id) {
-        item.title = title
-        item.isNew = false
-      }
-      return item
-    })
-    setFiles(newFiles)
+    // let newFiles = files.map((item) => {
+    //   if(item.id === id) {
+    //     item.title = title
+    //     item.isNew = false
+    //   }
+    //   return item
+    // })
+    const modifiedFile = { ...files[id], title: title,isNew: false}
+
+    setFiles({...files, [id]: modifiedFile})
   }
   // 查询文件
   const fileSearch = (value) => {
     console.log(searchedFiles)
-    const newFiles = files.filter(item => item.title.includes(value))
+    const newFiles = filesArr.filter(item => item.title.includes(value))
     if(newFiles) {
       setSearchFiles(newFiles)
     }else {
@@ -97,19 +104,29 @@ function App() {
   // 新建文件
   const createNewFile = () => {
     const newID = uuidv4()
-    const newFile = [
-      ...files,
-      {
+    // const newFile = [
+    //   ...files,
+    //   {
+    //     id: newID,
+    //     title: '',
+    //     body: '## 请输入Mak',
+    //     createdAt:new Date().getTime(),
+    //     isNew: true
+    //   }
+    // ]
+    const newFile = {
         id: newID,
         title: '',
         body: '## 请输入Mak',
         createdAt:new Date().getTime(),
         isNew: true
       }
-    ]
-    setFiles(newFile)
+    setFiles({ ...files, [newID]: newFile })
   }
-  const fileListArray = (searchedFiles.length > 0) ? searchedFiles: files
+  const openedFiles = openedFileIDs.map(openID => {
+    return files[openID]
+  })
+  const fileListArray = (searchedFiles.length > 0) ? searchedFiles: filesArr
   return (
     <div className="App container-fluid">
        <div className="row">
