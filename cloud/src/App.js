@@ -11,10 +11,11 @@ import TabList from './components/TabList'
 import SimpleMDE from "react-simplemde-editor"
 import uuidv4 from 'uuid/dist/v4'
 const fs = window.require('fs')
-const path = window.require('path')
-const newPath = path.join(__dirname,"helper.js")
-console.log('newParh',newPath)
-console.dir(fs)
+
+const Store = window.require('electron-store')
+const store = new Store()
+store.set('name', 'nameVlaue')
+console.log('electron', store.get('name'))
 function App() {
   // 文件数据
   const [files, setFiles ] = useState(flattenArr(defaultFiles))
