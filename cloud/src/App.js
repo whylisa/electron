@@ -10,6 +10,11 @@ import BottomBtn from "./components/BottomBtn";
 import TabList from './components/TabList'
 import SimpleMDE from "react-simplemde-editor"
 import uuidv4 from 'uuid/dist/v4'
+const fs = window.require('fs')
+const path = window.require('path')
+const newPath = path.join(__dirname,"helper.js")
+console.log('newParh',newPath)
+console.dir(fs)
 function App() {
   // 文件数据
   const [files, setFiles ] = useState(flattenArr(defaultFiles))
@@ -22,11 +27,7 @@ function App() {
   // 保存search时的状态集合
   const [ searchedFiles, setSearchFiles ] = useState([])
   // 打开的文件
- 
   const filesArr = objToArr(files)
-  console.log('files',files)
-  console.log('filesArr',filesArr)
-
   const activeFile = files[activeFileID]
   const fileClick = (fileID) => {
     // 設置當前激活的文件

@@ -143,6 +143,7 @@
      - 解决数组冗余
      - 数据处理更加方便
    - react中使用node
+     - Renderer Process 支持node.js api
      - 在electron中要用window.require()
      - __dirname当前文件夹的路径
      - node 10以上，内置promise
@@ -151,3 +152,4 @@
        - 块储存
        - 文件储存
        - 对象储存
+       - 读文件、写文件
