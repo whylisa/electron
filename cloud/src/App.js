@@ -11,11 +11,22 @@ import TabList from './components/TabList'
 import SimpleMDE from "react-simplemde-editor"
 import uuidv4 from 'uuid/dist/v4'
 const fs = window.require('fs')
-
+const { remote }  = window.require('electron')
 const Store = window.require('electron-store')
-const store = new Store()
-store.set('name', 'nameVlaue')
-console.log('electron', store.get('name'))
+const fileStore = new Store({'name': 'Files Data'})
+const saveFilesToStore = (files) => {
+  const filesStoreObj = objToArr(files).reduce((result, file) => {
+    const { id, path, title, createdAt } =  file
+    result[id] = {
+      id,
+      path,
+      title,
+      createdAt
+    }
+    return result
+  },{})
+  fileStore.set('files', filesStoreObj)
+}
 function App() {
   // 文件数据
   const [files, setFiles ] = useState(flattenArr(defaultFiles))
@@ -125,6 +136,18 @@ function App() {
       }
     setFiles({ ...files, [newID]: newFile })
   }
+  const importFiles = () => {
+    remote.dialog.showOpenDialog({
+      title: "请选择导入的Markdown文件",
+      properties: ['openFile','multiSelections'],
+      filters: [
+        { name: "Markdown files", extensions: ['md']}
+      ]
+
+    }).then(paths => {
+      console.log(paths.filePaths)
+    })
+  }
   const openedFiles = openedFileIDs.map(openID => {
     return files[openID]
   })
@@ -157,6 +180,7 @@ function App() {
                     text="导入"
                     colorClass="btn-success"
                     icon={faFileImport}
+                    onBtnClick={ importFiles }
                   />
                </div>
              </div>
