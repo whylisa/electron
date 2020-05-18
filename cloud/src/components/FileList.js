@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEdit, faTrash ,faTimes} from '@fortawesome/free-solid-svg-icons'
 import useKeyPress from '../hooks/useKeyPress'
-
+import useContextMenu from '../hooks/useContextMenu'
 import PropTypes from 'prop-types'
 const  { remote } =  window.require('electron')
 const { Menu, MenuItem } = remote
@@ -18,34 +18,26 @@ const FileList = ({ files, onFileClick, onSaveEdit, onFileDelete}) => {
             onFileDelete(editItem.id)
         }
     }
-    useEffect(() => {
-        const menu = new Menu()
-        menu.append(new MenuItem({
+    const clickedItem = useContextMenu([
+        {
             label: '打开',
             click: () => {
-                console.log('cli')
+                console.log('cli',clickedItem)
             }
-        }))
-        menu.append(new MenuItem({
+        },
+        {
             label: '重命名',
             click: () => {
                 console.log('cli')
             }
-        }))
-        menu.append(new MenuItem({
+        },
+        {
             label: '删除',
             click: () => {
                 console.log('cli')
             }
-        }))
-        const handleContextMenu = (e) => {
-            menu.popup({ window: remote.getCurrentWindow()})
         }
-        window.addEventListener('contextmenu', handleContextMenu)
-        return () => {
-            window.removeEventListener('contextmenu', handleContextMenu)
-        }
-    })
+    ],".file-list")
     useEffect(() => {
         const editItem = files.find(file => file.id === editStatus)
 
