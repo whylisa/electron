@@ -10,7 +10,8 @@ import BottomBtn from "./components/BottomBtn";
 import TabList from './components/TabList'
 import SimpleMDE from "react-simplemde-editor"
 import uuidv4 from 'uuid/dist/v4'
-const fs = window.require('fs')
+import fileHelper from './utils/fileHelper'
+const { join } = window.require('path')
 const { remote }  = window.require('electron')
 const Store = window.require('electron-store')
 const fileStore = new Store({'name': 'Files Data'})
@@ -26,10 +27,11 @@ const saveFilesToStore = (files) => {
     return result
   },{})
   fileStore.set('files', filesStoreObj)
+  // 新建、重命名、删除
 }
 function App() {
   // 文件数据
-  const [files, setFiles ] = useState(flattenArr(defaultFiles))
+  const [files, setFiles ] = useState(fileStore.get('files')||{})
   // 激活的那一条数据
   const [ activeFileID, setActiveFileID ] =useState('')
   // 打开文件的集合
@@ -40,6 +42,7 @@ function App() {
   const [ searchedFiles, setSearchFiles ] = useState([])
   // 打开的文件
   const filesArr = objToArr(files)
+  const savedLocation = remote.app.getPath('documents')
   const activeFile = files[activeFileID]
   const fileClick = (fileID) => {
     // 設置當前激活的文件
@@ -87,12 +90,17 @@ function App() {
   const fileDelete = (id) => {
     // 过滤出不等于当前点击的项，然后更新files
     // const newFileList = files.filter(file => file.id !== id)
-    delete files[id]
-    setFiles(files)
-    tabClose(id)
+
+    fileHelper.deleteFile(files[id].path).then(() => {
+      delete files[id]
+      setFiles(files)
+      saveFilesToStore(files)
+      tabClose(id)
+    })
+  
   }
   // 修改title
-  const updateFileName = (id, title) => {
+  const updateFileName = (id, title,isNew) => {
     // let newFiles = files.map((item) => {
     //   if(item.id === id) {
     //     item.title = title
@@ -100,9 +108,21 @@ function App() {
     //   }
     //   return item
     // })
-    const modifiedFile = { ...files[id], title: title,isNew: false}
-
-    setFiles({...files, [id]: modifiedFile})
+    const newPath = join(savedLocation ,`${title}.md`)
+    const modifiedFile = { ...files[id],title,isNew: false, path: newPath }
+    const newFiles = { ...files, [id]: modifiedFile}
+    if(isNew) {
+      fileHelper.writeFile(newPath,files[id].body).then(() => {
+        setFiles(newFiles)
+        saveFilesToStore(newFiles)
+      })
+    }else {
+      const oldPath = join(savedLocation, `${files[id].title}.md`)
+      fileHelper.renameFile(oldPath,newPath).then(() => {
+        setFiles(newFiles)
+        saveFilesToStore(newFiles)
+      })
+    }
   }
   // 查询文件
   const fileSearch = (value) => {

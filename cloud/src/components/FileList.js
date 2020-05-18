@@ -21,7 +21,7 @@ const FileList = ({ files, onFileClick, onSaveEdit, onFileDelete}) => {
 
         if( enterPressed && editStatus) {
             console.log(editItem.id)
-            onSaveEdit(editItem.id, value)
+            onSaveEdit(editItem.id, value,editItem.isNew)
             setValue('')
             setEditStatus(false)
         }
