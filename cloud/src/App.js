@@ -98,13 +98,18 @@ function App() {
   const fileDelete = (id) => {
     // 过滤出不等于当前点击的项，然后更新files
     // const newFileList = files.filter(file => file.id !== id)
-
-    fileHelper.deleteFile(files[id].path).then(() => {
-      delete files[id]
-      setFiles(files)
-      saveFilesToStore(files)
-      tabClose(id)
-    })
+    if(files[id].isNew) {
+      const { [id]: value, ...afterDelete } = files
+      setFiles(afterDelete)
+    }else {
+      fileHelper.deleteFile(files[id].path).then(() => {
+      const { [id]: value, ...afterDelete } = files
+        setFiles(afterDelete)
+        saveFilesToStore(afterDelete)
+        tabClose(id)
+      })
+    }
+   
   
   }
   // 修改title
