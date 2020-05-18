@@ -121,7 +121,7 @@ function App() {
     //   }
     //   return item
     // })
-    const newPath = isNew ? join(savedLocation ,`${title}.md`)
+    const newPath = isNew? join(savedLocation ,`${title}.md`)
     : join(dirname(files[id].path), `${title}.md`)
     const modifiedFile = { ...files[id],title,isNew: false, path: newPath }
     const newFiles = { ...files, [id]: modifiedFile}
@@ -171,11 +171,6 @@ function App() {
       }
     setFiles({ ...files, [newID]: newFile })
   }
-  const saveCurrentFile = () => {
-    fileHelper.writeFile(activeFile.path, activeFile.body).then(() => {
-      setUnsavedFileIDs(unsavedFileIDs.filter(id => id !== activeFile.id))
-    })
-  }
   const importFiles = () => {
     remote.dialog.showOpenDialog({
       title: "请选择导入的Markdown文件",
@@ -209,7 +204,7 @@ function App() {
         if(importFilesArr.length > 0){
           remote.dialog.showMessageBox({
             type: 'info',
-            title: `操作成功`,
+            title: `成功`,
             message: `成功导入了${importFilesArr.length}个文件`
           })
         }
