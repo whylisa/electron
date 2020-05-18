@@ -11,6 +11,7 @@ import TabList from './components/TabList'
 import SimpleMDE from "react-simplemde-editor"
 import uuidv4 from 'uuid/dist/v4'
 import fileHelper from './utils/fileHelper'
+import useIpcRenderer from './hooks/useIpcRenderer'
 const { join, basename, extname, dirname} = window.require('path')
 const { remote, ipcRenderer }  = window.require('electron')
 const Store = window.require('electron-store')
@@ -215,15 +216,13 @@ function App() {
     return files[openID]
   })
   const fileListArray = (searchedFiles.length > 0) ? searchedFiles: filesArr
-  useEffect(() => {
-    const callBack = () => {
-      console.log('get menu')
+  useIpcRenderer(
+    {
+      'create-new-file': createNewFile,
+      'import-file': importFiles,
+      
     }
-    ipcRenderer.on('create-new-file',callBack)
-    return () => {
-      ipcRenderer.removeAllListeners('create-new-file', callBack)
-    }
-  })
+  )
   return (
     <div className="App container-fluid">
        <div className="row">
