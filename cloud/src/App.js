@@ -46,8 +46,16 @@ function App() {
   const activeFile = files[activeFileID]
   const fileClick = (fileID) => {
     // 設置當前激活的文件
-      setActiveFileID(fileID)
-      // 把fileID添加到openedFileIDs中
+    setActiveFileID(fileID)
+    const currentFile = files[fileID]
+    if(!currentFile) {
+      fileHelper.readFile(currentFile.path).then( (value) => {
+        const newFile = {...files[fileID], body: value, isLoaded: true}
+        setFiles({ ...files, [fileID]: newFile})
+
+      })
+    }
+    // 把fileID添加到openedFileIDs中
     if(!openedFileIDs.includes(fileID)) {
       setOpenedFileIDs([...openedFileIDs, fileID])
     }
