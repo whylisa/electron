@@ -4,7 +4,9 @@ import { faEdit, faTrash ,faTimes} from '@fortawesome/free-solid-svg-icons'
 import useKeyPress from '../hooks/useKeyPress'
 import useContextMenu from '../hooks/useContextMenu'
 import PropTypes from 'prop-types'
+import { getParentNode } from '../utils/helper'
 const  { remote } =  window.require('electron')
+
 const { Menu, MenuItem } = remote
 const FileList = ({ files, onFileClick, onSaveEdit, onFileDelete}) => {
     const [editStatus, setEditStatus] = useState(false)
@@ -22,7 +24,12 @@ const FileList = ({ files, onFileClick, onSaveEdit, onFileDelete}) => {
         {
             label: '打开',
             click: () => {
-                console.log('cli',clickedItem)
+                const parentElement = getParentNode(clickedItem.current, 'file-item')
+                console.log(parentElement.dataset.id)
+                if(parentElement) {
+                    onFileClick(parentElement.dataset.id)
+                }
+
             }
         },
         {
@@ -37,7 +44,7 @@ const FileList = ({ files, onFileClick, onSaveEdit, onFileDelete}) => {
                 console.log('cli')
             }
         }
-    ],".file-list")
+    ],".file-list",[files])
     useEffect(() => {
         const editItem = files.find(file => file.id === editStatus)
 
@@ -50,23 +57,6 @@ const FileList = ({ files, onFileClick, onSaveEdit, onFileDelete}) => {
         if( escPressed && editStatus) {
             closeSearch(editItem)
         }
-
-
-        // const handleInputEvent = (event) => {
-        //     const { keyCode } = event
-        //     if( keyCode === 13 && setEditStatus) {
-        //         const editItem = files.find(file => file.id === editStatus)
-        //         onSaveEdit(editItem.id, value)
-        //         setValue('')
-        //         setEditStatus(false)
-        //     }else if(keyCode === 27 && setEditStatus) {
-        //         closeSearch(event)
-        //     }
-        // }
-        // document.addEventListener('keyup', handleInputEvent)
-        // return () => {
-        //     document.removeEventListener('keyup', handleInputEvent)
-        // }
     })
     useEffect(() => {
         const newFile = files.find(file => file.isNew)
@@ -79,7 +69,12 @@ const FileList = ({ files, onFileClick, onSaveEdit, onFileDelete}) => {
         <ul className="list-group list-group-flush file-list">
             {
                 files.map(file => (
-                    <li key={file.id} className="row list-group-item bg-light d-flex align-items-center file-item" >
+                    <li 
+                    className="row list-group-item bg-light d-flex align-items-center file-item"
+                    key={file.id}  
+                    data-id={file.id}
+                    data-title={file.title}
+                    >
                         { (file.id !== editStatus && !file.isNew) &&
                         <>
                         <span onClick={() => onFileClick(file.id)} className="col-8">{file.title}</span>
