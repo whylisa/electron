@@ -1,10 +1,9 @@
-import React, {useState, useEffect}from 'react'
+import React, {useState}from 'react'
 import { faPlus, faFileImport } from '@fortawesome/free-solid-svg-icons'
 import './App.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import FileSearch from './components/FileSearch'
 import FileList from './components/FileList'
-import defaultFiles from './utils/defaultFiles'
 import { flattenArr, objToArr} from './utils/helper'
 import BottomBtn from "./components/BottomBtn";
 import TabList from './components/TabList'
@@ -13,7 +12,7 @@ import uuidv4 from 'uuid/dist/v4'
 import fileHelper from './utils/fileHelper'
 import useIpcRenderer from './hooks/useIpcRenderer'
 const { join, basename, extname, dirname} = window.require('path')
-const { remote, ipcRenderer }  = window.require('electron')
+const { remote }  = window.require('electron')
 const Store = window.require('electron-store')
 const fileStore = new Store({'name': 'Files Data'})
 const saveFilesToStore = (files) => {

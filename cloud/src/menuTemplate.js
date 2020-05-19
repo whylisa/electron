@@ -16,6 +16,7 @@ let template = [{
     label: '保存',
     accelerator: 'CmdOrCtrl+S',
     click: (menuItem, browserWindow, event) => {
+      console.log(1)
       browserWindow.webContents.send('save-edit-file')
     }
   },{
@@ -30,7 +31,17 @@ let template = [{
     click: (menuItem, browserWindow, event) => {
       browserWindow.webContents.send('import-file')
     }
-  }]
+    
+  },
+  // {
+  //   label: '设置',
+  //   accelerator: 'Ctrl+,',
+  //   click: () => {
+  //     console.log(2)
+  //   ipcMain.emit('open-settings-window')
+  // }
+  // }
+]
 },
 {
   label: '编辑',
@@ -171,6 +182,7 @@ if (process.platform === 'darwin') {
       label: '设置',
       accelerator: 'Command+,',
       click: () => {
+        console.log(1)
         ipcMain.emit('open-settings-window')
       }
     }, {

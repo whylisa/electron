@@ -155,3 +155,14 @@
        - 对象储存
        - 读文件、写文件
      - 展开表达式删除 const { [id]: value, ...afterDelete } = files
+   - 文件导入
+     - 借助node 的读写功能，以及读取本地目录的功能api
+       - join()
+       - dirname()
+       - extname()
+       - basename()
+   - 添加上下文菜单
+     - Menu
+     - MenuItem
+   - 原生应用菜单
+     - 
