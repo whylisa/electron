@@ -24,9 +24,10 @@ document.addEventListener('DOMContentLoaded', () => {
     remote.dialog.showOpenDialog({
       properties: ['openDirectory'],
       message: '选择文件的存储路径',
-    }, (path) => {
-      if (Array.isArray(path)) {
-        $('#savedFileLocation').value = path[0]
+    }).then((path) => {
+      console.log(path.filePaths)
+      if (Array.isArray(path.filePaths)) {
+        $('#savedFileLocation').value = path.filePaths[0]
       }
     })
   })
